@@ -24,7 +24,10 @@
  */
 
 $string['pluginname'] = 'Record Audio';
-$string['record'] = 'New Recording';/*
+$string['record'] = 'New Recording';
+//Justin: This was needed when creating an instance
+$string['configplugin'] = 'Audio Recorder Plugin';
+/*
 $string['youtube:view'] = 'Use youtube in file picker';
 $string['configplugin'] = 'YouTube repository type configuration';
 $string['sortby'] = 'Sort By';

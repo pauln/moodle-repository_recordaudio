@@ -162,7 +162,8 @@ class repository_recordaudio extends repository {
             return $event;
         } else {
             $stored_file = $fs->create_file_from_string($record, $filedata);
-
+            
+/*	Justin: This didn't seem necessary and I just used the same return array as the original upload repo.
             $info = array();
             $info['contextid'] = $stored_file->get_contextid();
             $info['itemid'] = $stored_file->get_itemid();
@@ -174,10 +175,12 @@ class repository_recordaudio extends repository {
             $list[] = $info;
             return array('dynload'=>true, 'nosearch'=>true, 'nologin'=>true, 'list'=>$list);
 
-            /*return array('list'=>array(
+         */
+                
+            return array(
                 'url'=>moodle_url::make_draftfile_url($record->itemid, $record->filepath, $record->filename)->out(),
                 'id'=>$record->itemid,
-                'file'=>$record->filename));*/
+                'file'=>$record->filename);
         }
     }
 
@@ -189,11 +192,12 @@ class repository_recordaudio extends repository {
         global $CFG;
         $recorder = "";
         $url=$CFG->wwwroot.'/repository/recordaudio/assets/recorder.swf?gateway=form';
-        $callback = urlencode("(function(a, b){d=document;d.g=d.getElementById;fn=d.g('recordaudio_filename');fn.value=a;fn.disabled=true;fd=d.g('recordaudio_filedata');fd.value=b;f=fn;while(f.tagName!='FORM')f=f.parentNode;f.repo_upload_file.type='text';f.repo_upload_file.value='bogus.mp3';f.nextSibling.getElementsByTagName('button')[0].click();})");
+        // Justin: Here there was some code to disable the recordaudio_filename field, but since it was a hidden field, it messed it up somehow. I removed that code and the filename got passed through ok
+        $callback = urlencode("(function(a, b){d=document;d.g=d.getElementById;fn=d.g('recordaudio_filename');fn.value=a;fd=d.g('recordaudio_filedata');fd.value=b;f=fn;while(f.tagName!='FORM')f=f.parentNode;f.repo_upload_file.type='text';f.repo_upload_file.value='bogus.mp3';f.nextSibling.getElementsByTagName('button')[0].click();})");
         $flashvars="&callback={$callback}&filename=new_recording";
 
         $recorder = '<div style="position:absolute; top:0;left:0;right:0;bottom:0; background-color:#fff;">
-                <input type="hidden" style="font-size:x-large;margin-top:100px;" name="recordaudio_filename" id="recordaudio_filename" />
+                <input type="hidden"  name="recordaudio_filename" id="recordaudio_filename" value="sausages.mp3"/>
                 <textarea name="recordaudio_filedata" id="recordaudio_filedata" style="display:none;"></textarea>
                 <div id="onlineaudiorecordersection" style="margin:20% auto; text-align:center;">
                     <object id="onlineaudiorecorder" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="215" height="138">
