@@ -197,7 +197,7 @@ class repository_recordaudio extends repository {
         $flashvars="&callback={$callback}&filename=new_recording";
 
         $recorder = '<div style="position:absolute; top:0;left:0;right:0;bottom:0; background-color:#fff;">
-                <input type="hidden"  name="recordaudio_filename" id="recordaudio_filename" value="sausages.mp3"/>
+                <input type="hidden"  name="recordaudio_filename" id="recordaudio_filename" />
                 <textarea name="recordaudio_filedata" id="recordaudio_filedata" style="display:none;"></textarea>
                 <div id="onlineaudiorecordersection" style="margin:20% auto; text-align:center;">
                     <object id="onlineaudiorecorder" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="215" height="138">
