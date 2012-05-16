@@ -16,7 +16,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * repository_youtube class
+ * repository_recordaudio class
  *
  * @since 2.0
  * @package    repository
@@ -29,76 +29,22 @@
 class repository_recordaudio extends repository {
 
     /**
-     * Youtube plugin constructor
+     * RecordAudio plugin constructor
      * @param int $repositoryid
      * @param object $context
      * @param array $options
      */
     public function __construct($repositoryid, $context = SYSCONTEXTID, $options = array()) {
-        $this->start =1;
-        $this->max = 27;
-        $this->sort = optional_param('youtube_sort', 'relevance', PARAM_TEXT);
         parent::__construct($repositoryid, $context, $options);
     }
 
     public function check_login() {
-        return !empty($this->keyword);
+        // Needs to return false so that the "login" form is displayed (print_login())
+        return false;
     }
 
-    /**
-     * Return search results
-     * @param string $search_text
-     * @return array
-     */
-    /*public function search($search_text) {
-        $this->keyword = $search_text;
-        $ret  = array();
-        $ret['nologin'] = true;
-        $ret['list'] = $this->_get_collection($search_text, $this->start, $this->max, $this->sort);
-        return $ret;
-    }*/
-
-    /**
-     * Private method to get youtube search results
-     * @param string $keyword
-     * @param int $start
-     * @param int $max max results
-     * @param string $sort
-     * @return array
-     */
-    private function _get_collection($keyword, $start, $max, $sort) {
-        $list = array();
-        $this->feed_url = 'http://gdata.youtube.com/feeds/api/videos?q=' . urlencode($keyword) . '&format=5&start-index=' . $start . '&max-results=' .$max . '&orderby=' . $sort;
-        $c = new curl(array('cache'=>true, 'module_cache'=>'repository'));
-        $content = $c->get($this->feed_url);
-        $xml = simplexml_load_string($content);
-        $media = $xml->entry->children('http://search.yahoo.com/mrss/');
-        $links = $xml->children('http://www.w3.org/2005/Atom');
-        foreach ($xml->entry as $entry) {
-            $media = $entry->children('http://search.yahoo.com/mrss/');
-            $title = $media->group->title;
-            $attrs = $media->group->thumbnail[2]->attributes();
-            $thumbnail = $attrs['url'];
-            $arr = explode('/', $entry->id);
-            $id = $arr[count($arr)-1];
-            $source = 'http://www.youtube.com/v/' . $id . '#' . $title;
-            $list[] = array(
-                'title'=>(string)$title,
-                'thumbnail'=>(string)$attrs['url'],
-                'thumbnail_width'=>150,
-                'thumbnail_height'=>120,
-                'size'=>'',
-                'date'=>'',
-                'source'=>$source
-            );
-        }
-        return $list;
-    }
-
-    /**
-     * Youtube plugin doesn't support global search
-     */
     public function global_search() {
+        // Plugin doesn't support global search, since we don't have anything to search
         return false;
     }
 
@@ -162,21 +108,6 @@ class repository_recordaudio extends repository {
             return $event;
         } else {
             $stored_file = $fs->create_file_from_string($record, $filedata);
-            
-/*	Justin: This didn't seem necessary and I just used the same return array as the original upload repo.
-            $info = array();
-            $info['contextid'] = $stored_file->get_contextid();
-            $info['itemid'] = $stored_file->get_itemid();
-            $info['filearea'] = $stored_file->get_filearea();
-            $info['component'] = $stored_file->get_component();
-            $info['filepath'] = $stored_file->get_filepath();
-            $info['title'] = $stored_file->get_filename();
-            $list = array();
-            $list[] = $info;
-            return array('dynload'=>true, 'nosearch'=>true, 'nologin'=>true, 'list'=>$list);
-
-         */
-                
             return array(
                 'url'=>moodle_url::make_draftfile_url($record->itemid, $record->filepath, $record->filename)->out(),
                 'id'=>$record->itemid,
@@ -215,16 +146,8 @@ class repository_recordaudio extends repository {
                     </object>
                 </div>
             </div>';
+
         $ret = array();
-        /*$search = new stdClass();
-        $search->type = 'hidden" />'.$recorder.'<input style="display:none';
-        $search->id   = 'recordaudio_recorder';
-        $search->name = 's';
-        $search->label = get_string('record', 'repository_recordaudio').': ';*/
-        /*$ret['login'] = array($search);
-        $ret['login_btn_label'] = get_string('upload', 'repository') . '" disabled type="button';
-        $ret['login_btn_action'] = 'search';*/
-        /*$ret['login_btn_id'] = 'repo-form';*/
         $ret['upload'] = array('label'=>$recorder, 'id'=>'repo-form');
         return $ret;
     }
@@ -237,3 +160,5 @@ class repository_recordaudio extends repository {
         return FILE_INTERNAL;
     }
 }
+
+// Note: microphone icon (pix/icon.png) by Creative Freedom, found via GettyIcons: http://www.gettyicons.com/free-icon/133/shimmer-icon-set/free-microphone-icon-png/
