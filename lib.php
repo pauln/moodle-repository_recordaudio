@@ -35,6 +35,40 @@ class repository_recordaudio extends repository {
      * @param array $options
      */
     public function __construct($repositoryid, $context = SYSCONTEXTID, $options = array()) {
+        global $PAGE, $CFG;
+        if($CFG->version >= 2012052200) {
+            // new filepicker, need to do new jiggerpokery to get the recorder in
+            $form = $this->print_login();
+            $recorder = $form['upload']['label'];
+            $template = '
+<div class="fp-upload-form mdl-align">
+    <div class="fp-content-center">
+        <form enctype="multipart/form-data" method="POST">
+            <table >
+                <tr class="{!}fp-recordaudio-recorder">
+                    <td colspan="2">'.$recorder.'</td>
+                </tr>
+                <tr class="{!}fp-file">
+                    <td class="mdl-right"><label>'.get_string('attachment', 'repository').'</label>:</td>
+                    <td class="mdl-left"><input type="file"/></td></tr>
+                <tr class="{!}fp-saveas">
+                    <td class="mdl-right"><label>'.get_string('saveas', 'repository').'</label>:</td>
+                    <td class="mdl-left"><input type="text"/></td></tr>
+                <tr class="{!}fp-setauthor">
+                    <td class="mdl-right"><label>'.get_string('author', 'repository').'</label>:</td>
+                    <td class="mdl-left"><input type="text"/></td></tr>
+                <tr class="{!}fp-setlicense">
+                    <td class="mdl-right"><label>'.get_string('chooselicense', 'repository').'</label>:</td>
+                    <td class="mdl-left"><select/></td></tr>
+            </table>
+        </form>
+        <div><button class="{!}fp-upload-btn">'.get_string('upload', 'repository').'</button></div>
+    </div>
+</div> ';
+            $template = preg_replace('/\{\!\}/', '', $template);
+            $templates = array('uploadform'=>$template);
+            $PAGE->requires->js_init_call('M.core_filepicker.set_templates', array($templates), true);
+        }
         parent::__construct($repositoryid, $context, $options);
     }
 
@@ -124,7 +158,7 @@ class repository_recordaudio extends repository {
         $recorder = "";
         $url=$CFG->wwwroot.'/repository/recordaudio/assets/recorder.swf?gateway=form';
         // Justin: Here there was some code to disable the recordaudio_filename field, but since it was a hidden field, it messed it up somehow. I removed that code and the filename got passed through ok
-        $callback = urlencode("(function(a, b){d=document;d.g=d.getElementById;fn=d.g('recordaudio_filename');fn.value=a;fd=d.g('recordaudio_filedata');fd.value=b;f=fn;while(f.tagName!='FORM')f=f.parentNode;f.repo_upload_file.type='hidden';f.repo_upload_file.value='bogus.mp3';f.nextSibling.getElementsByTagName('button')[0].click();})");
+        $callback = urlencode("(function(a, b){d=document;d.g=d.getElementById;fn=d.g('recordaudio_filename');fn.value=a;fd=d.g('recordaudio_filedata');fd.value=b;f=fn;while(f.tagName!='FORM')f=f.parentNode;f.repo_upload_file.type='hidden';f.repo_upload_file.value='bogus.mp3';while(f.tagName!='DIV')f=f.nextSibling;f.getElementsByTagName('button')[0].click();})");
         $flashvars="&callback={$callback}&filename=new_recording";
 
         $recorder = '<div style="position:absolute; top:0;left:0;right:0;bottom:0; background-color:#fff;">
@@ -147,7 +181,7 @@ class repository_recordaudio extends repository {
                 </div>
             </div>';
 
-        $ret = array();
+        $ret = array('nosearch'=>true, 'norefresh'=>true);
         $ret['upload'] = array('label'=>$recorder, 'id'=>'repo-form');
         return $ret;
     }
