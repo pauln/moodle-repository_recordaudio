@@ -183,7 +183,7 @@ class repository_recordaudio extends repository {
                 </div>
             </div>';
 
-        $ret = array('nosearch'=>true, 'norefresh'=>true);
+        $ret = array('nosearch'=>true, 'norefresh'=>true, 'nologin'=>true);
         $ret['upload'] = array('label'=>$recorder, 'id'=>'repo-form');
         return $ret;
     }
