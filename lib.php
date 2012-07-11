@@ -163,11 +163,11 @@ class repository_recordaudio extends repository {
         $callback = urlencode("(function(a, b){d=document;d.g=d.getElementById;fn=d.g('recordaudio_filename');fn.value=a;fd=d.g('recordaudio_filedata');fd.value=b;f=fn;while(f.tagName!='FORM')f=f.parentNode;f.repo_upload_file.type='hidden';f.repo_upload_file.value='bogus.mp3';while(f.tagName!='DIV')f=f.nextSibling;f.getElementsByTagName('button')[0].click();})");
         $flashvars="&callback={$callback}&filename=new_recording";
 
-        $recorder = '<div style="position:absolute; top:0;left:0;right:0;bottom:0; background-color:#fff;">
+        $recorder = '<div class="repository_recordaudio_wrapper">
                 <input type="hidden"  name="recordaudio_filename" id="recordaudio_filename" />
-                <textarea name="recordaudio_filedata" id="recordaudio_filedata" style="display:none;"></textarea>
-                <div id="onlineaudiorecordersection" style="margin:20% auto; text-align:center;">
-                    <object id="onlineaudiorecorder" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="215" height="138">
+                <textarea name="recordaudio_filedata" id="recordaudio_filedata"></textarea>
+                <div>
+                    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="215" height="138">
                         <param name="movie" value="'.$url.$flashvars.'" />
                         <param name="wmode" value="transparent" />
                         <!--[if !IE]>-->
