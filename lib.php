@@ -167,7 +167,7 @@ class repository_recordaudio extends repository {
                 <input type="hidden"  name="recordaudio_filename" id="recordaudio_filename" />
                 <textarea name="recordaudio_filedata" id="recordaudio_filedata"></textarea>
                 <div>
-                    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="215" height="138">
+                    <object type="application/x-shockwave-flash" data="'.$url.$flashvars.'" width="215" height="138">
                         <param name="movie" value="'.$url.$flashvars.'" />
                         <param name="wmode" value="transparent" />
                         <!--[if !IE]>-->
