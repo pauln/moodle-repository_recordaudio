@@ -160,7 +160,7 @@ class repository_recordaudio extends repository {
         $recorder = "";
         $url=$CFG->wwwroot.'/repository/recordaudio/assets/recorder.swf?gateway=form';
         // Justin: Here there was some code to disable the recordaudio_filename field, but since it was a hidden field, it messed it up somehow. I removed that code and the filename got passed through ok
-        $callback = urlencode("(function(a, b){d=document;d.g=d.getElementById;fn=d.g('recordaudio_filename');fn.value=a;fd=d.g('recordaudio_filedata');fd.value=b;f=fn;while(f.tagName!='FORM')f=f.parentNode;f.repo_upload_file.type='hidden';f.repo_upload_file.value='bogus.mp3';while(f.tagName!='DIV')f=f.nextSibling;f.getElementsByTagName('button')[0].click();})");
+        $callback = urlencode("(function(a, b){d=document;d.g=d.getElementById;fn=d.g('recordaudio_filename');fn.value=a;fd=d.g('recordaudio_filedata');fd.value=b;f=fn;while(f.tagName!='FORM')f=f.parentNode;uf=d.g(f.repo_upload_file.id);uf2=d.createElement('input');uf2.type='hidden';uf2.name='repo_upload_file';uf2.value='bogus.mp3';uf.parentNode.replaceChild(uf2,uf);while(f.tagName!='DIV')f=f.nextSibling;f.getElementsByTagName('button')[0].click();})");
         $flashvars="&callback={$callback}&filename=new_recording";
 
         $recorder = '<div class="repository_recordaudio_wrapper">
