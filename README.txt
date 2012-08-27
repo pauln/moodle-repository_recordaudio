@@ -1,10 +1,10 @@
-Record Audio repository plugin for Moodle 2.x
+Record Audio repository plugin for Moodle 2.3
 
 INTRODUCTION:
 The Record Audio repository plugin allows users to simply record a snippet of audio (in MP3 format) instead of uploading (or choosing) a file, anywhere that Moodle 2 provides access to the file picker.  No streaming server is required to use this plugin; recording is done entirely on the user's computer, with the file uploaded via HTTP.
 
 REQUIREMENTS:
-Moodle 2.x (tested on Moodle 2.0 to 2.3)
+Moodle 2.3.1+ (Build 20120816) or newer
 Flash Player 10.1 or higher
 JavaScript enabled in your browser
 

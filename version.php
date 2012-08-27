@@ -26,8 +26,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2012061102;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->release   = '1.0 Beta 4';
-$plugin->requires  = 2010112400;        // Requires this Moodle version
-$plugin->maturity  = MATURITY_BETA;
+$plugin->version   = 2012061103;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->release   = '1.0 for Moodle 2.3.1+';
+$plugin->requires  = 2012062501.11;        // Requires this Moodle version
+$plugin->maturity  = MATURITY_STABLE;
 $plugin->component = 'repository_recordaudio'; // Full name of the plugin (used for diagnostics)
