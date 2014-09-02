@@ -134,7 +134,7 @@ class repository_recordaudio extends repository {
         $record->license  = optional_param('license', $CFG->sitedefaultlicense, PARAM_TEXT);
         $record->author   = optional_param('author', '', PARAM_TEXT);
 
-        $context = get_context_instance(CONTEXT_USER, $USER->id);
+        $context = context_user::instance($USER->id);
         $filename = required_param('recordaudio_filename', PARAM_FILE);
         $filedata = required_param('recordaudio_filedata', PARAM_RAW);
         $filedata = base64_decode($filedata);
@@ -147,7 +147,7 @@ class repository_recordaudio extends repository {
         }
 
         $record->filename = $filename;
-        
+
         if (empty($record->itemid)) {
             $record->itemid = 0;
         }
